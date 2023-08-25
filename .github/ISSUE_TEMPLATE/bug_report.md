@@ -4,6 +4,7 @@ about: Create a report to help us improve
 title: "[BUG]"
 labels: bug
 assignees: wadikk83
+projects: 'Learning telegram bot'
 
 ---
 
