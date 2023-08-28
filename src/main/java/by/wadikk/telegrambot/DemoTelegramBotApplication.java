@@ -1,4 +1,4 @@
-package by.wadikk.demotelegrambot;
+package by.wadikk.telegrambot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

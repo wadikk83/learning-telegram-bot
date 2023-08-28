@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-event_cash-table
+      author: Vadzim.Nekhviadovich
+      changes:
+        - createTable:
+            tableName: event_cash
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+              - column:
+                  name: time
+                  type: timestamp
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: user_id
+                  type: bigint
