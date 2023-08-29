@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - include:
+      file: 01-changeset-create-users-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: 02-changeset-create-user_events-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: 03-changeset-create-event_cash-table.yaml
+      relativeToChangelogFile: true

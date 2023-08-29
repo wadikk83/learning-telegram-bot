@@ -1,4 +1,4 @@
-package by.wadikk.demotelegrambot;
+package by.wadikk.telegrambot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
