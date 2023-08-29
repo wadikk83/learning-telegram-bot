@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoTelegramBotApplication {
+public class TelegramBotApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DemoTelegramBotApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TelegramBotApplication.class, args);
+    }
 
 }

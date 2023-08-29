@@ -1,9 +1,15 @@
 package by.wadikk.telegrambot.entity;
 
-import lombok.*;
 
-import javax.persistence.*;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -11,7 +17,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User {
 
     @Id
@@ -20,17 +25,5 @@ public class User {
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "time_zone", columnDefinition = "default 0")
-    //sets the broadcast time of events for your time zone
-    private int timeZone;
-
-    @OneToMany(mappedBy = "user")
-    private List<Event> events;
-
-    @Column(name = "on_off")
-    // on/off send event
-    private boolean on;
-
 
 }

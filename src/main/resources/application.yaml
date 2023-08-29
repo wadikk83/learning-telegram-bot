@@ -2,13 +2,11 @@ server:
   port: 5000
 
 telegram:
+  api-url: https://api.telegram.org/
   bot-name: myjava_test_bot
   bot-token: 6074706047:AAHLTonZY_Q4-3XMtvn1Jd-P0dvH72rqAcc
-  webhook-path: https://7b62-86-57-161-116.ngrok.io
+  webhook-path: https://00e4-86-57-161-116.ngrok.io
   adminId: 407731984
-
-eventservice:
-  period: 600000
 
 spring:
   datasource:
@@ -19,3 +17,4 @@ spring:
 
   liquibase:
     change-log: db/changelog-master.yaml
+    enabled: false
