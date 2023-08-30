@@ -27,6 +27,7 @@ public class ReplyKeyboardMaker {
         KeyboardRow row1 = new KeyboardRow();
         row1.add(new KeyboardButton(ButtonNameEnum.GET_MATHEMATICS_TASKS_BUTTON.getButtonName()));
         row1.add(new KeyboardButton(ButtonNameEnum.GET_ENGLISH_TASKS_BUTTON.getButtonName()));
+        row1.add(new KeyboardButton(ButtonNameEnum.GET_RUSSIAN_TASKS_BUTTON.getButtonName()));
 
         KeyboardRow row2 = new KeyboardRow();
         row2.add(new KeyboardButton(ButtonNameEnum.HELP_BUTTON.getButtonName()));

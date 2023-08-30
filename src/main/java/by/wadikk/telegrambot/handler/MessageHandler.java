@@ -1,14 +1,17 @@
 package by.wadikk.telegrambot.handler;
 
-import by.wadikk.telegrambot.entity.Task;
+import by.wadikk.telegrambot.entity.MathTask;
+import by.wadikk.telegrambot.entity.RussianTask;
 import by.wadikk.telegrambot.entity.User;
 import by.wadikk.telegrambot.keyboards.InlineKeyboardMaker;
 import by.wadikk.telegrambot.keyboards.ReplyKeyboardMaker;
-import by.wadikk.telegrambot.model.BotMessageEnum;
 import by.wadikk.telegrambot.model.ButtonNameEnum;
 import by.wadikk.telegrambot.model.CallbackDataEnum;
-import by.wadikk.telegrambot.service.TaskService;
+import by.wadikk.telegrambot.service.MathTaskService;
+import by.wadikk.telegrambot.service.RussianTaskService;
 import by.wadikk.telegrambot.service.UserService;
+import by.wadikk.telegrambot.utils.ReadCSVFile;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -21,17 +24,24 @@ public class MessageHandler {
 
     private final InlineKeyboardMaker inlineKeyboardMaker;
 
-    private final TaskService taskService;
+    private final MathTaskService mathTaskService;
+
+    private final RussianTaskService russianTaskService;
 
     private final UserService userService;
 
-    public MessageHandler(ReplyKeyboardMaker replyKeyboardMaker, InlineKeyboardMaker inlineKeyboardMaker, TaskService taskService, UserService userService) {
+    public MessageHandler(ReplyKeyboardMaker replyKeyboardMaker,
+                          InlineKeyboardMaker inlineKeyboardMaker,
+                          MathTaskService mathTaskService,
+                          RussianTaskService russianTaskService, UserService userService) {
         this.replyKeyboardMaker = replyKeyboardMaker;
         this.inlineKeyboardMaker = inlineKeyboardMaker;
-        this.taskService = taskService;
+        this.mathTaskService = mathTaskService;
+        this.russianTaskService = russianTaskService;
         this.userService = userService;
     }
 
+    @SneakyThrows
     public BotApiMethod<?> answerMessage(Message message) {
         String chatId = message.getChatId().toString();
 
@@ -48,13 +58,17 @@ public class MessageHandler {
             return getMathematicsTaskMessage(chatId);
         } else if (inputText.equals(ButtonNameEnum.GET_ENGLISH_TASKS_BUTTON.getButtonName())) {
             return getEnglishTaskMessage(chatId, message.getFrom().getId());
+        } else if (inputText.equals(ButtonNameEnum.GET_RUSSIAN_TASKS_BUTTON.getButtonName())) {
+            return getRussianTaskMessage(chatId);
         } else if (inputText.equals(ButtonNameEnum.HELP_BUTTON.getButtonName())) {
-            SendMessage sendMessage = new SendMessage(chatId, BotMessageEnum.HELP_MESSAGE.getMessage());
+            //todo для теста
+            new ReadCSVFile(russianTaskService).readFile("src/main/resources/tasks/Russian.csv");
+            SendMessage sendMessage = new SendMessage(chatId, ButtonNameEnum.HELP_MESSAGE.getButtonName());
             //включаем поддержку режима разметки, чтобы управлять отображением текста и добавлять эмодзи
             sendMessage.enableMarkdown(true);
             return sendMessage;
         } else {
-            return new SendMessage(chatId, BotMessageEnum.NON_COMMAND_MESSAGE.getMessage());
+            return new SendMessage(chatId, ButtonNameEnum.NON_COMMAND_MESSAGE.getButtonName());
         }
     }
 
@@ -68,19 +82,40 @@ public class MessageHandler {
 
     private BotApiMethod<?> getMathematicsTaskMessage(String chatId) {
 
-        Task randomTask = taskService.getRandomTask();
+        MathTask randomTask = mathTaskService.getRandomTask();
 
         SendMessage sendMessage = new SendMessage(chatId, "Задание по математике \n\n" +
                 randomTask.getTask());
         sendMessage.setReplyMarkup(inlineKeyboardMaker.getInlineTaskButtons(
-                CallbackDataEnum.TASK_.name() + randomTask.getId() + "_",
+                CallbackDataEnum.TASK_.name() +
+                        "math_" + randomTask.getId() + "_",
+                randomTask.getAnswers()));
+        return sendMessage;
+    }
+
+    private BotApiMethod<?> getRussianTaskMessage(String chatId) {
+
+        RussianTask randomTask = russianTaskService.getRandomTask().orElse(
+                RussianTask.builder().build()
+        );
+
+        //todo сделать нормальный обработчик
+        if (randomTask.getTask() == null) {
+            return new SendMessage(chatId, "Что то пошло не так...");
+        }
+
+        SendMessage sendMessage = new SendMessage(chatId, "Задание по русскому языку \n\n" +
+                randomTask.getTask());
+        sendMessage.setReplyMarkup(inlineKeyboardMaker.getInlineTaskButtons(
+                CallbackDataEnum.TASK_.name() +
+                        "russian_" + randomTask.getId() + "_",
                 randomTask.getAnswers()));
         return sendMessage;
     }
 
 
     private BotApiMethod<?> getStartMessage(String chatId, Long userId) {
-        SendMessage sendMessage = new SendMessage(chatId, BotMessageEnum.HELP_MESSAGE.getMessage());
+        SendMessage sendMessage = new SendMessage(chatId, ButtonNameEnum.HELP_MESSAGE.getButtonName());
         // включаем поддержку режима разметки, чтобы управлять отображением текста и добавлять эмодзи
         sendMessage.enableMarkdown(true);
         sendMessage.setReplyMarkup(replyKeyboardMaker.getMainMenuKeyboard(userId));

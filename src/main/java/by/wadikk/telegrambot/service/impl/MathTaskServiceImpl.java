@@ -1,50 +1,55 @@
-package by.wadikk.telegrambot.repository;
+package by.wadikk.telegrambot.service.impl;
 
-import by.wadikk.telegrambot.entity.Task;
-import org.springframework.stereotype.Component;
+import by.wadikk.telegrambot.entity.MathTask;
+import by.wadikk.telegrambot.repository.MathTaskRepository;
+import by.wadikk.telegrambot.service.MathTaskService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Component
-public class TaskRepository {
+@Service
+public class MathTaskServiceImpl implements MathTaskService {
 
-    private List<Task> taskList = new ArrayList<>();
+    private final MathTaskRepository repository;
 
-    public void addTask(Task task) {
-        taskList.add(task);
+    public MathTaskServiceImpl(MathTaskRepository repository) {
+        this.repository = repository;
     }
 
-    public Task getRandomTask() {
-        return taskList.get(new Random().nextInt(taskList.size() - 1));
+    @Override
+    public void addTask(MathTask task) {
+        repository.save(task);
     }
 
-    public List<Task> getAllTasks() {
-        return taskList;
+    @Override
+    public MathTask getRandomTask() {
+        return repository.getRandomTask();
     }
 
-    public Task getTaskById(Long id) {
-        //todo optional
-        return taskList.stream()
-                .filter(it -> it.getId().longValue() == id.longValue())
-                .findFirst()
-                .get();
+    @Override
+    public List<MathTask> getAllTasks() {
+        return repository.findAll();
+    }
+
+    @Override
+    public MathTask getTaskById(Long id) {
+        return repository.findById(id).orElseThrow();
     }
 
     @PostConstruct
-    void init() {
+    private void init() {
         Random random = new Random();
 
         //Таблица умножения
-        for (int i = 1; i < 9; i++) {
-            for (int j = 1; j < 9; j++) {
-                taskList.add(
-                        Task.builder()
+        for (int i = 1; i < 11; i++) {
+            for (int j = 1; j < 11; j++) {
+                repository.save(
+                        MathTask.builder()
                                 .task(i + " x " + j + " = ???")
                                 .id(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE)
                                 .correctAnswer(String.valueOf(i * j))

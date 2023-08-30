@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-russian_task-table
+      author: Vadzim.Nekhviadovich
+      changes:
+        - createTable:
+            tableName: russian_task
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    name: pk_russian_task
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: task
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: correct_answer
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: russian_task_answers
+            columns:
+              - column:
+                  name: russian_task_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    foreignKeyName: fk_russian_task_id
+                    referencedColumnNames: id
+                    referencedTableName: russian_task
+              - column:
+                  name: answers
+                  type: varchar(255)
+                  constraints:
+                    nullable: false

@@ -1,16 +1,20 @@
 package by.wadikk.telegrambot.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
+@Entity
+@Table(name = "math_task")
 @Getter
 @Setter
-@MappedSuperclass
-public abstract class Task {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class MathTask {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +28,10 @@ public abstract class Task {
     @Column(name = "correct_answer")
     private String correctAnswer;
 
+    @NotNull
     @ElementCollection
+    @CollectionTable(name = "math_task_answers", joinColumns = @JoinColumn(name = "math_task_id"))
+    @Column(name = "answers")
     private Set<String> answers;
 
 }
