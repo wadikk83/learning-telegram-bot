@@ -1,4 +1,4 @@
 databaseChangeLog:
   - include:
-      file: 01-changeset-create-users-table.yaml
+      file: 01-changeset-create-admin-users.yaml
       relativeToChangelogFile: true

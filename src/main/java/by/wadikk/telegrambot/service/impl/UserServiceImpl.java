@@ -36,4 +36,18 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         return userRepository.save(user);
     }
+
+    @Override
+    public void addAnswer(Long id, Boolean isCorrect) {
+        User newUser = userRepository.findById(id)
+                .map(user -> User.builder()
+                        .id(user.getId())
+                        .name(user.getName())
+                        .isAdmin(user.getIsAdmin())
+                        .totalCorrectAnswers(user.getTotalCorrectAnswers() + isCorrect.compareTo(false))
+                        .totalAnswers(user.getTotalAnswers() + 1)
+                        .build())
+                .orElseThrow();
+        userRepository.save(newUser);
+    }
 }

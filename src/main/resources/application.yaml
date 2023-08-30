@@ -5,16 +5,16 @@ telegram:
   api-url: https://api.telegram.org/
   bot-name: myjava_test_bot
   bot-token: 6074706047:AAHLTonZY_Q4-3XMtvn1Jd-P0dvH72rqAcc
-  webhook-path: https://8c5a-86-57-161-116.ngrok.io
+  webhook-path: https://40a5-86-57-161-116.ngrok.io
   adminId: 407731984
 
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/ltb
     driver-class-name: org.postgresql.Driver
-    username: postgres
+    username: user_ltb
     password: postgres
 
   liquibase:
     change-log: db/changelog-master.yaml
-    enabled: false
+    enabled: true

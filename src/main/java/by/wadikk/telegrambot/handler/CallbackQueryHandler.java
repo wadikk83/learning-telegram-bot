@@ -1,7 +1,10 @@
 package by.wadikk.telegrambot.handler;
 
 import by.wadikk.telegrambot.model.CallbackDataEnum;
+import by.wadikk.telegrambot.model.ConfirmEnum;
+import by.wadikk.telegrambot.model.MistakeEnum;
 import by.wadikk.telegrambot.service.TaskService;
+import by.wadikk.telegrambot.service.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -12,13 +15,14 @@ public class CallbackQueryHandler {
 
     private final TaskService taskService;
 
-    public CallbackQueryHandler(TaskService taskService) {
+    private final UserService userService;
+
+    public CallbackQueryHandler(TaskService taskService, UserService userService) {
         this.taskService = taskService;
+        this.userService = userService;
     }
 
     public BotApiMethod<?> processCallbackQuery(CallbackQuery buttonQuery) {
-        final String chatId = buttonQuery.getMessage().getChatId().toString();
-
         String data = buttonQuery.getData();
 
         if (data.contains(CallbackDataEnum.TASK_.name())) {
@@ -35,9 +39,13 @@ public class CallbackQueryHandler {
         String answer = taskService.getTaskById(Long.parseLong(data[1])).getCorrectAnswer();
 
         if (answer.equals(data[2])) {
-            sendMessage.setText("Правильно");
+            sendMessage.setText(ConfirmEnum.randomConfirm().getMessage());
+            userService.addAnswer(query.getFrom().getId(), true);
+
         } else {
-            sendMessage.setText("Неправильно");
+            sendMessage.setText(MistakeEnum.randomConfirm().getMessage() + " \n\n" +
+                    "Правильный ответ - " + answer);
+            userService.addAnswer(query.getFrom().getId(), false);
         }
         return sendMessage;
     }

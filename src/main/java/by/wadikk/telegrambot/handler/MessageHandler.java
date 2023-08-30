@@ -1,12 +1,14 @@
 package by.wadikk.telegrambot.handler;
 
 import by.wadikk.telegrambot.entity.Task;
+import by.wadikk.telegrambot.entity.User;
 import by.wadikk.telegrambot.keyboards.InlineKeyboardMaker;
 import by.wadikk.telegrambot.keyboards.ReplyKeyboardMaker;
 import by.wadikk.telegrambot.model.BotMessageEnum;
 import by.wadikk.telegrambot.model.ButtonNameEnum;
 import by.wadikk.telegrambot.model.CallbackDataEnum;
 import by.wadikk.telegrambot.service.TaskService;
+import by.wadikk.telegrambot.service.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -21,18 +23,20 @@ public class MessageHandler {
 
     private final TaskService taskService;
 
-    public MessageHandler(ReplyKeyboardMaker replyKeyboardMaker, InlineKeyboardMaker inlineKeyboardMaker, TaskService taskService) {
+    private final UserService userService;
+
+    public MessageHandler(ReplyKeyboardMaker replyKeyboardMaker, InlineKeyboardMaker inlineKeyboardMaker, TaskService taskService, UserService userService) {
         this.replyKeyboardMaker = replyKeyboardMaker;
         this.inlineKeyboardMaker = inlineKeyboardMaker;
         this.taskService = taskService;
+        this.userService = userService;
     }
 
     public BotApiMethod<?> answerMessage(Message message) {
         String chatId = message.getChatId().toString();
 
-//        if (message.hasDocument()) {
-//            //return addUserDictionary(chatId, message.getDocument().getFileId());
-//        }
+        //валидируем юзера, если новый, то добавляем в базу
+        validateUser(message.getFrom());
 
         String inputText = message.getText();
 
@@ -81,5 +85,18 @@ public class MessageHandler {
         sendMessage.enableMarkdown(true);
         sendMessage.setReplyMarkup(replyKeyboardMaker.getMainMenuKeyboard(userId));
         return sendMessage;
+    }
+
+    private void validateUser(org.telegram.telegrambots.meta.api.objects.User fromTelegram) {
+        if (userService.findByUserId(fromTelegram.getId()) == null) {
+            userService.save(
+                    User.builder()
+                            .id(fromTelegram.getId())
+                            .name(fromTelegram.getUserName())
+                            .isAdmin(false)
+                            .totalAnswers(0)
+                            .totalCorrectAnswers(0)
+                            .build());
+        }
     }
 }

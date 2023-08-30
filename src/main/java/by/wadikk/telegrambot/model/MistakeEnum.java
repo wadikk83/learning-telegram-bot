@@ -6,7 +6,7 @@ public enum MistakeEnum {
 
     MISTAKE1("Неправильно \uD83D\uDE41"),
     MISTAKE2("Ты ошибаешься \uD83E\uDD28"),
-    MISTAKE3("я не согласен \uD83D\uDE27");
+    MISTAKE3("Я не согласен \uD83D\uDE27");
 
     private String message;
 

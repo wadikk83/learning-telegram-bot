@@ -13,4 +13,6 @@ public interface UserService {
     void removeUser(User user);
 
     User save(User user);
+
+    void addAnswer(Long id, Boolean isCorrect);
 }

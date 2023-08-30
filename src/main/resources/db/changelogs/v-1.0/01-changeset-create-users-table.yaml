@@ -9,7 +9,7 @@ databaseChangeLog:
               - column:
                   name: id
                   type: bigint
-                  autoIncrement: true
+#                  autoIncrement: true
                   constraints:
                     name: pk_users
                     primaryKey: true
@@ -20,10 +20,12 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: time_zone
-                  type: int
-                  defaultValue: 0
-              - column:
-                  name: on_off
+                  name: is_admin
                   type: boolean
-                  defaultValueBoolean: true
+                  defaultValue: false
+              - column:
+                  name: total_correct_answers
+                  type: integer
+              - column:
+                  name: total_answers
+                  type: integer

@@ -1,17 +1,17 @@
 version: '3.8'
 
 services:
-  postgres:
+  postgres-db:
     image: postgres
-    container_name: postgres
+    container_name: postgres-db
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: "ltb"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: ltb
+      POSTGRES_USER: user_ltb
+      POSTGRES_PASSWORD: postgres
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres -d ltb" ]
+      test: [ "CMD-SHELL", "pg_isready -U user_ltb -d ltb" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -19,6 +19,13 @@ services:
     restart: unless-stopped
     volumes:
       - ltb-data:/var/lib/postgresql/data
+
+#  ltb-bot:
+#    build:
+#      context: .
+#    restart: unless-stopped
+#    depends_on:
+#      - postgres-db
 
 volumes:
   ltb-data:
