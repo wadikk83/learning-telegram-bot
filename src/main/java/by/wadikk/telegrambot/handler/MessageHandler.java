@@ -1,5 +1,6 @@
 package by.wadikk.telegrambot.handler;
 
+import by.wadikk.telegrambot.command.CommandContainer;
 import by.wadikk.telegrambot.entity.EnglishTask;
 import by.wadikk.telegrambot.entity.MathTask;
 import by.wadikk.telegrambot.entity.RussianTask;
@@ -8,18 +9,19 @@ import by.wadikk.telegrambot.keyboards.InlineKeyboardMaker;
 import by.wadikk.telegrambot.keyboards.ReplyKeyboardMaker;
 import by.wadikk.telegrambot.model.ButtonNameEnum;
 import by.wadikk.telegrambot.model.CallbackDataEnum;
-import by.wadikk.telegrambot.service.EnglishTaskService;
-import by.wadikk.telegrambot.service.MathTaskService;
-import by.wadikk.telegrambot.service.RussianTaskService;
-import by.wadikk.telegrambot.service.UserService;
+import by.wadikk.telegrambot.service.*;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
+
+import static by.wadikk.telegrambot.model.ButtonNameEnum.NO_COMMAND;
 
 @Component
 public class MessageHandler {
+    public static String COMMAND_PREFIX = "/";
 
     private final ReplyKeyboardMaker replyKeyboardMaker;
 
@@ -33,18 +35,26 @@ public class MessageHandler {
 
     private final UserService userService;
 
+    private final CommandContainer commandContainer;
+
+    private final SendMessageBotService sendMessageBotService;
+
     public MessageHandler(ReplyKeyboardMaker replyKeyboardMaker,
                           InlineKeyboardMaker inlineKeyboardMaker,
                           MathTaskService mathTaskService,
                           RussianTaskService russianTaskService,
                           EnglishTaskService englishTaskService,
-                          UserService userService) {
+                          UserService userService,
+                          CommandContainer commandContainer,
+                          SendMessageBotService sendMessageBotService) {
         this.replyKeyboardMaker = replyKeyboardMaker;
         this.inlineKeyboardMaker = inlineKeyboardMaker;
         this.mathTaskService = mathTaskService;
         this.russianTaskService = russianTaskService;
         this.englishTaskService = englishTaskService;
         this.userService = userService;
+        this.commandContainer = commandContainer;
+        this.sendMessageBotService = sendMessageBotService;
     }
 
     @SneakyThrows
@@ -79,7 +89,13 @@ public class MessageHandler {
 
     private BotApiMethod<?> getMathematicsTaskMessage(String chatId) {
 
-        MathTask randomTask = mathTaskService.getRandomTask();
+        MathTask randomTask = mathTaskService.getRandomTask().orElse(
+                MathTask.builder().build()
+        );
+
+        if (randomTask.getTask() == null) {
+            return new SendMessage(chatId, "Список заданий пустой");
+        }
 
         SendMessage sendMessage = new SendMessage(chatId, "Задание по математике \n\n" +
                 randomTask.getTask());
@@ -150,6 +166,19 @@ public class MessageHandler {
                             .totalAnswers(0)
                             .totalCorrectAnswers(0)
                             .build());
+        }
+    }
+
+    public BotApiMethod<?> newAnswerMessage(Update update) {
+        validateUser(update.getMessage().getFrom());
+
+        String message = update.getMessage().getText().trim();
+        String username = update.getMessage().getFrom().getUserName();
+        if (message.startsWith(COMMAND_PREFIX)) {
+            String commandIdentifier = message.split(" ")[0].toLowerCase();
+            return commandContainer.findCommand(commandIdentifier, username).execute(update);
+        } else {
+            return commandContainer.findCommand(NO_COMMAND.getCommandName(), username).execute(update);
         }
     }
 }

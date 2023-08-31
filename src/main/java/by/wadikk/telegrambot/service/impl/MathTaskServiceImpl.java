@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,8 +28,9 @@ public class MathTaskServiceImpl implements MathTaskService {
     }
 
     @Override
-    public MathTask getRandomTask() {
-        return repository.getRandomTask();
+    public Optional<MathTask> getRandomTask() {
+
+        return Optional.ofNullable(repository.getRandomTask());
     }
 
     @Override

@@ -3,11 +3,12 @@ package by.wadikk.telegrambot.service;
 import by.wadikk.telegrambot.entity.MathTask;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MathTaskService {
     void addTask(MathTask task);
 
-    MathTask getRandomTask();
+    Optional<MathTask> getRandomTask();
 
     List<MathTask> getAllTasks();
 

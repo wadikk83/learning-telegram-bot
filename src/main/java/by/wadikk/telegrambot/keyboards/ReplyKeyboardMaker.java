@@ -26,7 +26,7 @@ public class ReplyKeyboardMaker {
      */
     public ReplyKeyboardMarkup getMainMenuKeyboard(Long userId) {
         KeyboardRow row1 = new KeyboardRow();
-        row1.add(new KeyboardButton(ButtonNameEnum.GET_MATHEMATICS_TASKS_BUTTON.getButtonName()));
+        row1.add(new KeyboardButton(ButtonNameEnum.MATHEMATICS.getButtonName()));
         row1.add(new KeyboardButton(ButtonNameEnum.GET_ENGLISH_TASKS_BUTTON.getButtonName()));
         row1.add(new KeyboardButton(ButtonNameEnum.GET_RUSSIAN_TASKS_BUTTON.getButtonName()));
 
