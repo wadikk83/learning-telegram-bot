@@ -4,6 +4,7 @@ import by.wadikk.telegrambot.model.ButtonNameEnum;
 import by.wadikk.telegrambot.model.CallbackDataEnum;
 import by.wadikk.telegrambot.model.ConfirmEnum;
 import by.wadikk.telegrambot.model.MistakeEnum;
+import by.wadikk.telegrambot.service.EnglishTaskService;
 import by.wadikk.telegrambot.service.MathTaskService;
 import by.wadikk.telegrambot.service.RussianTaskService;
 import by.wadikk.telegrambot.service.UserService;
@@ -19,13 +20,16 @@ public class CallbackQueryHandler {
 
     private final RussianTaskService russianTaskService;
 
+    private final EnglishTaskService englishTaskService;
+
     private final UserService userService;
 
     public CallbackQueryHandler(MathTaskService taskService,
                                 RussianTaskService russianTaskService,
-                                UserService userService) {
+                                EnglishTaskService englishTaskService, UserService userService) {
         this.mathTaskService = taskService;
         this.russianTaskService = russianTaskService;
+        this.englishTaskService = englishTaskService;
         this.userService = userService;
     }
 
@@ -39,6 +43,8 @@ public class CallbackQueryHandler {
                 return checkRussianTask(data, chatId, userId);
             } else if (data[1].equals("math")) {
                 return checkMathTask(data, chatId, userId);
+            } else if (data[1].equals("english")) {
+                return checkEnglishTask(data, chatId, userId);
             }
         }
         return new SendMessage(buttonQuery.getMessage().getChatId().toString(),
@@ -70,6 +76,21 @@ public class CallbackQueryHandler {
         } else {
             sendMessage.setText(MistakeEnum.randomConfirm().getMessage() + " \n\n" +
                     "Правильный ответ - " + answer);
+            userService.addAnswer(userId, false);
+        }
+        return sendMessage;
+    }
+
+    private SendMessage checkEnglishTask(String[] data, String chatId, Long userId) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
+        String answer = englishTaskService.getTaskById(Long.parseLong(data[2])).getCorrectAnswer();
+        if (answer.equals(data[3])) {
+            sendMessage.setText(ConfirmEnum.randomConfirm().getMessage());
+            userService.addAnswer(userId, true);
+        } else {
+            sendMessage.setText(MistakeEnum.randomConfirm().getMessage() + " \n\n" +
+                    "Correct answer - " + answer);
             userService.addAnswer(userId, false);
         }
         return sendMessage;

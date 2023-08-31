@@ -1,8 +1,9 @@
 package by.wadikk.telegrambot.keyboards;
 
 
-import by.wadikk.telegrambot.config.TelegramConfig;
+import by.wadikk.telegrambot.entity.User;
 import by.wadikk.telegrambot.model.ButtonNameEnum;
+import by.wadikk.telegrambot.service.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
@@ -14,10 +15,10 @@ import java.util.List;
 @Component
 public class ReplyKeyboardMaker {
 
-    private final TelegramConfig telegramConfig;
+    private final UserService userService;
 
-    public ReplyKeyboardMaker(TelegramConfig telegramConfig) {
-        this.telegramConfig = telegramConfig;
+    public ReplyKeyboardMaker(UserService userService) {
+        this.userService = userService;
     }
 
     /**
@@ -31,10 +32,13 @@ public class ReplyKeyboardMaker {
 
         KeyboardRow row2 = new KeyboardRow();
         row2.add(new KeyboardButton(ButtonNameEnum.HELP_BUTTON.getButtonName()));
-        if (userId.longValue() == telegramConfig.getAdminId().longValue()) {
+        row2.add(new KeyboardButton(ButtonNameEnum.STATISTICS.getButtonName()));
+
+        //если пользователь админ, то добавляем ему кнопку
+        User user = userService.findByUserId(userId).orElseThrow();
+        if (user.getIsAdmin()) {
             row2.add(new KeyboardButton(ButtonNameEnum.ADMIN_BUTTON.getButtonName()));
         }
-
 
         List<KeyboardRow> keyboard = new ArrayList<>();
         keyboard.add(row1);

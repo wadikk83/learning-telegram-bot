@@ -3,10 +3,11 @@ package by.wadikk.telegrambot.service;
 import by.wadikk.telegrambot.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
-    User findByUserId(long id);
+    Optional<User> findByUserId(long id);
 
     List<User> findAllUsers();
 

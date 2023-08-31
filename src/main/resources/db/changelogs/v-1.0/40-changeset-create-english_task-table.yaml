@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-english_task-table
+      author: Vadzim.Nekhviadovich
+      changes:
+        - createTable:
+            tableName: english_task
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    name: pk_english_task
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: task
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: correct_answer
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: english_task_answers
+            columns:
+              - column:
+                  name: english_task_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    foreignKeyName: fk_english_task_id
+                    referencedColumnNames: id
+                    referencedTableName: english_task
+              - column:
+                  name: answers
+                  type: varchar(255)
+                  constraints:
+                    nullable: false

@@ -28,7 +28,7 @@ public class RussianTask {
 
     @NotNull
     @ElementCollection
-    @CollectionTable(name = "math_task_answers", joinColumns = @JoinColumn(name = "math_task_id"))
+    @CollectionTable(name = "russian_task_answers", joinColumns = @JoinColumn(name = "russian_task_id"))
     @Column(name = "answers")
     private Set<String> answers;
 }
