@@ -16,8 +16,4 @@ public class TelegramConfig {
 
     @Value("${telegram.bot-token}")
     private String botToken;
-
-    @Value("${telegram.adminId}")
-    private Long adminId;
-
 }
