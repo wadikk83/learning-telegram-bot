@@ -25,7 +25,10 @@ public class SpringConfig {
     public TelegramBot bot(SetWebhook setWebhook,
                            MessageHandler messageHandler,
                            CallbackQueryHandler callbackQueryHandler) {
-        TelegramBot bot = new TelegramBot(setWebhook, messageHandler, callbackQueryHandler);
+        TelegramBot bot = new TelegramBot(setWebhook,
+                telegramConfig.getBotToken(),
+                messageHandler,
+                callbackQueryHandler);
         bot.setBotPath(telegramConfig.getWebhookPath());
         bot.setBotUsername(telegramConfig.getBotName());
         return bot;
