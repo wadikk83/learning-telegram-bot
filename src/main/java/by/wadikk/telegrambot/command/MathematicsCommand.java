@@ -1,8 +1,8 @@
 package by.wadikk.telegrambot.command;
 
+import by.wadikk.telegrambot.checker.CallbackDataCheckerEnum;
 import by.wadikk.telegrambot.entity.MathTask;
 import by.wadikk.telegrambot.keyboards.InlineKeyboardMaker;
-import by.wadikk.telegrambot.model.CallbackDataEnum;
 import by.wadikk.telegrambot.service.MathTaskService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -38,8 +38,9 @@ public class MathematicsCommand implements Command {
                 message + randomTask.getTask());
 
         sendMessage.setReplyMarkup(inlineKeyboardMaker.getInlineTaskButtons(
-                CallbackDataEnum.TASK_.name() +
-                        "math_" + randomTask.getId() + "_",
+                CallbackDataCheckerEnum.TASK_.name() +
+                        CallbackDataCheckerEnum.MATH.name() +
+                        "_" + randomTask.getId() + "_",
                 randomTask.getAnswers()));
         return sendMessage;
     }

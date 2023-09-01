@@ -1,4 +1,4 @@
-package by.wadikk.telegrambot.model;
+package by.wadikk.telegrambot.checker;
 
 import java.util.Random;
 
@@ -9,7 +9,7 @@ public enum ConfirmEnum {
     CONFIRM3("Умница \uD83D\uDC4D");
 
     private static final Random PRNG = new Random();
-    private String message;
+    private final String message;
 
     ConfirmEnum(String message) {
         this.message = message;

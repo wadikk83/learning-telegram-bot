@@ -2,7 +2,7 @@ package by.wadikk.telegrambot.command;
 
 import by.wadikk.telegrambot.entity.RussianTask;
 import by.wadikk.telegrambot.keyboards.InlineKeyboardMaker;
-import by.wadikk.telegrambot.model.CallbackDataEnum;
+import by.wadikk.telegrambot.checker.CallbackDataCheckerEnum;
 import by.wadikk.telegrambot.service.RussianTaskService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -37,8 +37,9 @@ public class RussianCommand implements Command {
                 message + randomTask.getTask());
 
         sendMessage.setReplyMarkup(inlineKeyboardMaker.getInlineTaskButtons(
-                CallbackDataEnum.TASK_.name() +
-                        "russian_" + randomTask.getId() + "_",
+                CallbackDataCheckerEnum.TASK_.name() +
+                        CallbackDataCheckerEnum.RUSSIAN.name() +
+                        "_" + randomTask.getId() + "_",
                 randomTask.getAnswers()));
         return sendMessage;
     }

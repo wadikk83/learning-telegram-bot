@@ -1,4 +1,4 @@
-package by.wadikk.telegrambot.model;
+package by.wadikk.telegrambot.checker;
 
 import java.util.Random;
 
@@ -8,7 +8,7 @@ public enum MistakeEnum {
     MISTAKE2("Ты ошибаешься \uD83E\uDD28"),
     MISTAKE3("Я не согласен \uD83D\uDE27");
 
-    private String message;
+    private final String message;
 
     private static final Random PRNG = new Random();
 

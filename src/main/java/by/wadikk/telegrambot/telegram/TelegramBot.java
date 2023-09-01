@@ -18,13 +18,19 @@ public class TelegramBot extends SpringWebhookBot {
 
     private String botPath;
     private String botUsername;
+    private String botToken;
 
     private final MessageHandler messageHandler;
     private final CallbackQueryHandler callbackQueryHandler;
 
 
-    public TelegramBot(SetWebhook setWebhook, MessageHandler messageHandler, CallbackQueryHandler callbackQueryHandler) {
-        super(setWebhook);
+    public TelegramBot(SetWebhook setWebhook,
+                       String botToken,
+                       MessageHandler messageHandler,
+                       CallbackQueryHandler callbackQueryHandler) {
+
+        super(setWebhook, botToken);
+        this.botToken = botToken;
         this.messageHandler = messageHandler;
         this.callbackQueryHandler = callbackQueryHandler;
     }
@@ -36,7 +42,7 @@ public class TelegramBot extends SpringWebhookBot {
             return callbackQueryHandler.processCallbackQuery(callbackQuery);
         } else {
             if (update.getMessage() != null) {
-                return messageHandler.newAnswerMessage(update);
+                return messageHandler.answerMessage(update);
             }
         }
         //todo обработать

@@ -12,7 +12,7 @@ public enum ButtonNameEnum {
     MATHEMATICS("Математика", "/mathematics"),
     ENGLISH("Английский язык", "/english"),
     RUSSIAN("Русский язык", "/russian"),
-    ADMIN_BUTTON("Админ", "/admin"),
+    ADMIN("Админ", "/admin"),
     STATISTICS("Статистика", "/stat"),
     NO_COMMAND("nocommand", "nocommand");
 
