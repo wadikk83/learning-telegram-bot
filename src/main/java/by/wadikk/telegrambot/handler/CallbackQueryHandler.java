@@ -1,6 +1,6 @@
 package by.wadikk.telegrambot.handler;
 
-import by.wadikk.telegrambot.model.ButtonNameEnum;
+import by.wadikk.telegrambot.command.ButtonNameEnum;
 import by.wadikk.telegrambot.model.CallbackDataEnum;
 import by.wadikk.telegrambot.model.ConfirmEnum;
 import by.wadikk.telegrambot.model.MistakeEnum;

@@ -1,8 +1,8 @@
 package by.wadikk.telegrambot.keyboards;
 
 
+import by.wadikk.telegrambot.command.ButtonNameEnum;
 import by.wadikk.telegrambot.entity.User;
-import by.wadikk.telegrambot.model.ButtonNameEnum;
 import by.wadikk.telegrambot.service.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -27,11 +27,11 @@ public class ReplyKeyboardMaker {
     public ReplyKeyboardMarkup getMainMenuKeyboard(Long userId) {
         KeyboardRow row1 = new KeyboardRow();
         row1.add(new KeyboardButton(ButtonNameEnum.MATHEMATICS.getButtonName()));
-        row1.add(new KeyboardButton(ButtonNameEnum.GET_ENGLISH_TASKS_BUTTON.getButtonName()));
-        row1.add(new KeyboardButton(ButtonNameEnum.GET_RUSSIAN_TASKS_BUTTON.getButtonName()));
+        row1.add(new KeyboardButton(ButtonNameEnum.ENGLISH.getButtonName()));
+        row1.add(new KeyboardButton(ButtonNameEnum.RUSSIAN.getButtonName()));
 
         KeyboardRow row2 = new KeyboardRow();
-        row2.add(new KeyboardButton(ButtonNameEnum.HELP_BUTTON.getButtonName()));
+        row2.add(new KeyboardButton(ButtonNameEnum.HELP.getButtonName()));
         row2.add(new KeyboardButton(ButtonNameEnum.STATISTICS.getButtonName()));
 
         //если пользователь админ, то добавляем ему кнопку

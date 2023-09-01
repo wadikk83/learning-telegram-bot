@@ -1,35 +1,35 @@
 package by.wadikk.telegrambot.command;
 
-import by.wadikk.telegrambot.entity.MathTask;
+import by.wadikk.telegrambot.entity.EnglishTask;
 import by.wadikk.telegrambot.keyboards.InlineKeyboardMaker;
 import by.wadikk.telegrambot.model.CallbackDataEnum;
-import by.wadikk.telegrambot.service.MathTaskService;
+import by.wadikk.telegrambot.service.EnglishTaskService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
-public class MathematicsCommand implements Command {
+public class EnglishCommand implements Command {
 
-    private final MathTaskService service;
+    private final EnglishTaskService service;
 
     private final InlineKeyboardMaker inlineKeyboardMaker;
 
-    private final String message = "Задание по математике \n\n";
+    private final String message = "English task \n\n";
 
-    public MathematicsCommand(MathTaskService service,
-                              InlineKeyboardMaker inlineKeyboardMaker) {
+    public EnglishCommand(EnglishTaskService service, InlineKeyboardMaker inlineKeyboardMaker) {
         this.service = service;
         this.inlineKeyboardMaker = inlineKeyboardMaker;
     }
 
     @Override
     public BotApiMethod<?> execute(Update update) {
-        MathTask randomTask = service.getRandomTask().orElse(
-                MathTask.builder().build()
+        EnglishTask randomTask = service.getRandomTask().orElse(
+                EnglishTask.builder().build()
         );
 
+        //todo
         if (randomTask.getTask() == null) {
             return new SendMessage(update.getMessage().getChatId().toString(), "Список заданий пустой");
         }
@@ -39,7 +39,7 @@ public class MathematicsCommand implements Command {
 
         sendMessage.setReplyMarkup(inlineKeyboardMaker.getInlineTaskButtons(
                 CallbackDataEnum.TASK_.name() +
-                        "math_" + randomTask.getId() + "_",
+                        "english_" + randomTask.getId() + "_",
                 randomTask.getAnswers()));
         return sendMessage;
     }
