@@ -15,6 +15,9 @@ public class CommandContainer {
     private final HelpCommand helpCommand;
     private final StatisticsCommand statisticsCommand;
     private final AdminCommand adminCommand;
+    private final AllUsersCommand allUsersCommand;
+    private final MainMenuCommand mainMenuCommand;
+    private final UploadTasksCommand uploadTasksCommand;
     private final UnknownCommand unknownCommand;
     private final ImmutableMap<String, Command> commandMap;
 
@@ -24,7 +27,11 @@ public class CommandContainer {
                             RussianCommand russianCommand,
                             HelpCommand helpCommand,
                             StatisticsCommand statisticsCommand,
-                            AdminCommand adminCommand, UnknownCommand unknownCommand) {
+                            AdminCommand adminCommand,
+                            AllUsersCommand allUsersCommand,
+                            MainMenuCommand mainMenuCommand,
+                            UploadTasksCommand uploadTasksCommand,
+                            UnknownCommand unknownCommand) {
         this.startCommand = startCommand;
         this.mathematicsCommand = mathematicsCommand;
         this.englishCommand = englishCommand;
@@ -32,6 +39,9 @@ public class CommandContainer {
         this.helpCommand = helpCommand;
         this.statisticsCommand = statisticsCommand;
         this.adminCommand = adminCommand;
+        this.allUsersCommand = allUsersCommand;
+        this.mainMenuCommand = mainMenuCommand;
+        this.uploadTasksCommand = uploadTasksCommand;
         this.unknownCommand = unknownCommand;
 
         commandMap = ImmutableMap.<String, Command>builder()
@@ -49,6 +59,12 @@ public class CommandContainer {
                 .put(STATISTICS.getButtonName(), statisticsCommand)
                 .put(ADMIN.getCommandName(), adminCommand)
                 .put(ADMIN.getButtonName(), adminCommand)
+                .put(MAIN_MENU.getCommandName(), mainMenuCommand)
+                .put(MAIN_MENU.getButtonName(), mainMenuCommand)
+                .put(ALL_USERS.getCommandName(), allUsersCommand)
+                .put(ALL_USERS.getButtonName(), allUsersCommand)
+                .put(UPLOAD_TASKS.getCommandName(), uploadTasksCommand)
+                .put(UPLOAD_TASKS.getButtonName(), uploadTasksCommand)
                 .build();
     }
 

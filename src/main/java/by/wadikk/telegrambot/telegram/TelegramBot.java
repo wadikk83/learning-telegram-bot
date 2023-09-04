@@ -36,7 +36,7 @@ public class TelegramBot extends SpringWebhookBot {
     }
 
     @Override
-    public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
+    public BotApiMethod<?> onWebhookUpdateReceived(Update update)  {
         if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
             return callbackQueryHandler.processCallbackQuery(callbackQuery);

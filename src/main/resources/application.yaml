@@ -5,7 +5,7 @@ telegram:
   api-url: https://api.telegram.org/
   bot-name: myjava_test_bot
   bot-token: 6074706047:AAHLTonZY_Q4-3XMtvn1Jd-P0dvH72rqAcc
-  webhook-path: https://80c0-86-57-161-116.ngrok.io
+  webhook-path: https://c30b-86-57-161-116.ngrok.io
 
 spring:
   datasource:

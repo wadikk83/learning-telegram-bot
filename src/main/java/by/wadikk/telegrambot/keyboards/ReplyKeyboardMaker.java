@@ -34,7 +34,7 @@ public class ReplyKeyboardMaker {
         row2.add(new KeyboardButton(ButtonNameEnum.HELP.getButtonName()));
         row2.add(new KeyboardButton(ButtonNameEnum.STATISTICS.getButtonName()));
 
-        //если пользователь админ, то добавляем ему кнопку
+        //если пользователь админ, то добавляем ему кнопку админа
         User user = userService.findByUserId(userId).orElseThrow();
         if (user.getIsAdmin()) {
             row2.add(new KeyboardButton(ButtonNameEnum.ADMIN.getButtonName()));
